@@ -1,35 +1,114 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>My Portfolio</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#10111a">
+    <meta name="description" content="Fahad Lal — Computer Science student, developer, and AI/ML enthusiast.">
+    <title>Fahad Lal | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
 </head>
 
 <body>
-  <header class="hero">
-    <h1 id="name"></h1>
-    <p id="tagline"></p>
-    <nav id="links"></nav>
-  </header>
-  <main>
-    <section>
-      <h2>About</h2>
-      <p id="bio"></p>
-    </section>
-    <section>
-      <h2>Skills</h2>
-      <ul id="skills" class="chips"></ul>
-    </section>
-    <section>
-      <h2>Projects</h2>
-      <div id="projects" class="grid"></div>
-    </section>
-  </main>
-  <footer id="footer"></footer>
-  <script src="script.js"></script>
-</body>
 
+    <!-- Top Navigation -->
+    <header class="site-header">
+        <nav class="navbar" aria-label="Main navigation">
+            <a href="#home" class="brand"><span>.</span>Fahad</a>
+
+            <div class="nav-links">
+                <a href="#home" class="active">Home</a>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero -->
+    <main>
+        <section class="hero" id="home">
+
+            <!-- Left: neural network -->
+            <div class="hero-visual" id="hero">
+                <canvas id="neural-network"
+                    aria-label="Animated neural network visualization"
+                    role="img"></canvas>
+
+                
+            </div>
+
+            <!-- Right: Personal introduction -->
+            <div class="hero-content">
+                <p class="eyebrow">
+                    COMPUTER SCIENCE <span>·</span> AI / ML
+                </p>
+
+                <h1>
+                    Hi, I'm <span id="name"></span>
+                </h1>
+
+                <p id="tagline" class="tagline"></p>
+
+                <p id="hero-bio" class="hero-bio"></p>
+
+                <div class="hero-actions">
+                    <a href="#projects" class="btn btn-primary">
+                        View Projects <span>↗</span>
+                    </a>
+
+                    <a href="#footer" class="btn btn-secondary">
+                        Connect
+                    </a>
+                </div>
+
+                <nav id="links" class="social-links"
+                    aria-label="Social profiles"></nav>
+            </div>
+
+        </section>
+
+        <!-- About -->
+        <section class="section about-section" id="about">
+            <div class="section-heading">
+                <p class="eyebrow">A LITTLE ABOUT ME</p>
+                <h2>Always learning. Always building.</h2>
+            </div>
+
+            <p id="about-bio"></p>
+        </section>
+
+
+        <!-- Skills -->
+        <section class="section" id="skills">
+            <div class="section-heading">
+                <p class="eyebrow">WHAT I WORK WITH</p>
+                <h2>Skills & Technologies</h2>
+            </div>
+
+            <ul id="skills-list" class="chips"></ul>
+        </section>
+
+        <!-- Projects -->
+        <section class="section" id="projects">
+            <div class="section-heading">
+                <p class="eyebrow">WHAT I'VE BUILT</p>
+                <h2>Featured Projects</h2>
+            </div>
+
+            <div id="projects-list" class="grid"></div>
+        </section>
+
+        
+    </main>
+
+    <footer id="footer">
+        <p>Byeeeeeeeeeee!</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
 </html>
