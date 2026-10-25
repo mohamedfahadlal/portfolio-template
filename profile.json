@@ -1,19 +1,45 @@
 {
-    "name": "Your Name",
+    "name": "Mohamed Fahad Lal",
     "tagline": "Your one-line introduction",
     "bio": "Write 2 or 3 sentences about yourself.",
     "skills": [
+        "C",
+        "C++",
+        "Python",
+        "Java",
+        "HTML",
+        "CSS",
+        "JavaScript",
         "Git",
-        "HTML"
+        "GitHub",
+        "Flask",
+        "Django",
+        "JavaFx",   
+        "Node.js",
+        "MySQL",
+        "MongoDB",
+        "PostgreSQL",
+        "Machine Learning",
+        "Keras",
+        "Matplotlib",
+        "Numpy",
+        "Pandas",
+        "PyTorch",
+        "TensorFlow",
+        "Scikit-learn",
+        "OpenCV",
+        "MediaPipe",
+        "Arduino"
     ],
     "projects": [
         {
-            "title": "My first project",
-            "desc": "What it does.",
-            "link": "https://github.com/yourname"
+            "title": "AiQI",
+            "desc": "AI-Based Real-Time Air Quality Risk Assessment and Personalized Health Advisory System.",
+            "link": "https://github.com/mohamedfahadlal/AiQI"
         }
     ],
     "links": {
-        "github": "https://github.com/yourname"
+        "github": "https://github.com/mohamedfahadlal",
+        "linkedin": "https://www.linkedin.com/in/mohamedfahadlal/"
     }
 }
