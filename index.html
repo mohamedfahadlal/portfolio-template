@@ -12,18 +12,28 @@
 </head>
 
 <body>
-
+    <canvas id="neural-canvas" aria-hidden="true"></canvas>
     <!-- Top Navigation -->
     <header class="site-header">
         <nav class="navbar" aria-label="Main navigation">
-            <a href="#home" class="brand"><span>.</span>Fahad</a>
 
+            <!-- Left: Brand -->
+            <a href="#home" class="brand">
+                <span class="brand-dot">.</span>Fahad
+            </a>
+
+            <!-- Center: Navigation links -->
             <div class="nav-links">
                 <a href="#home" class="active">Home</a>
                 <a href="#about">About</a>
                 <a href="#skills">Skills</a>
                 <a href="#projects">Projects</a>
             </div>
+
+            <!-- Right: Social icons -->
+            <div id="links" class="navbar-socials"
+                aria-label="Social profiles"></div>
+
         </nav>
     </header>
 
@@ -55,17 +65,19 @@
                 <p id="hero-bio" class="hero-bio"></p>
 
                 <div class="hero-actions">
-                    <a href="#projects" class="btn btn-primary">
-                        View Projects <span>↗</span>
+                    <a
+                        href="https://drive.google.com/file/d/1En2auELsVuPyitRh2LUeTLbkmFUv3YQK/view?usp=sharing"
+                        class="btn btn-primary"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        My Resume <span>↗</span>
                     </a>
 
                     <a href="#footer" class="btn btn-secondary">
                         Connect
                     </a>
                 </div>
-
-                <nav id="links" class="social-links"
-                    aria-label="Social profiles"></nav>
             </div>
 
         </section>
@@ -108,7 +120,8 @@
         <p>Byeeeeeeeeeee!</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/neural-bg.js"></script>
 
 </body>
 </html>
