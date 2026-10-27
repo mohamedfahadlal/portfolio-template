@@ -597,3 +597,101 @@ fetch('profile.json')
         requestAnimationFrame(loop);
     }
 })();
+
+
+/* =====================================
+   SCROLL REVEAL OBSERVER
+   ===================================== */
+
+(() => {
+    const reducedMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+    ).matches;
+
+    const sections = document.querySelectorAll(
+        'main > section'
+    );
+
+    // Avoid animations for users who prefer reduced motion.
+    if (reducedMotion) {
+        sections.forEach(section => {
+            section.classList.add('is-visible');
+        });
+
+        return;
+    }
+
+    // Reveal sections as they enter the viewport.
+    const observer = new IntersectionObserver(
+        entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                } else {
+                    // Allows the animation to run again
+                    // when the user scrolls back to the section.
+                    entry.target.classList.remove('is-visible');
+                }
+            });
+        },
+        {
+            threshold: 0.12,
+            rootMargin: '0px 0px -40px 0px'
+        }
+    );
+
+    sections.forEach(section => {
+        section.classList.add('reveal');
+        observer.observe(section);
+    });
+})();
+
+/* Active navbar link on scroll */
+document.addEventListener("DOMContentLoaded", () => {
+    const navLinks = document.querySelectorAll(".nav-links a");
+
+    const sections = ["home", "about", "skills", "projects"]
+        .map(id => document.getElementById(id))
+        .filter(Boolean);
+
+    function setActiveLink(id) {
+        navLinks.forEach(link => {
+            const isActive = link.getAttribute("href") === `#${id}`;
+
+            link.classList.toggle("active", isActive);
+
+            if (isActive) {
+                link.setAttribute("aria-current", "location");
+            } else {
+                link.removeAttribute("aria-current");
+            }
+        });
+    }
+
+    const observer = new IntersectionObserver(
+        entries => {
+            const visibleSections = entries
+                .filter(entry => entry.isIntersecting)
+                .sort(
+                    (a, b) =>
+                        b.intersectionRatio - a.intersectionRatio
+                );
+
+            if (visibleSections.length > 0) {
+                setActiveLink(visibleSections[0].target.id);
+            }
+        },
+        {
+            rootMargin: "-20% 0px -60% 0px",
+            threshold: [0, 0.1, 0.25, 0.5, 0.75]
+        }
+    );
+
+    sections.forEach(section => observer.observe(section));
+
+    // Ensure Home is active when the page first loads.
+    if (window.scrollY < 100) {
+        setActiveLink("home");
+    }
+});
+
