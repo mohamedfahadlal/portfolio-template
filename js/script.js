@@ -12,6 +12,122 @@ const esc = (s) =>
 const safe = (url) =>
     /^https?:\/\//i.test(url || '') ? url : '#';
 
+
+/* Project cards: image, tags, spotlight hover */
+
+// Allows http(s) URLs and simple relative paths like images/demo.png
+const safeImg = (url) =>
+    /^(https?:\/\/[^\s"'<>]+|[\w\-./%]+)$/i.test(url || '') ? url : '';
+
+const placeholderSvg = `
+    <svg viewBox="0 0 200 110" fill="none" stroke="currentColor" aria-hidden="true">
+        <g stroke-width="1" opacity=".55">
+            <path d="M25 25 L75 15 M25 25 L75 55 M25 55 L75 15 M25 55 L75 55 M25 55 L75 95 M25 85 L75 55 M25 85 L75 95"/>
+            <path d="M75 15 L125 35 M75 55 L125 35 M75 55 L125 75 M75 95 L125 75 M75 15 L125 75"/>
+            <path d="M125 35 L175 55 M125 75 L175 55"/>
+        </g>
+        <g fill="currentColor" stroke="none">
+            <circle cx="25" cy="25" r="3.5"/><circle cx="25" cy="55" r="3.5"/><circle cx="25" cy="85" r="3.5"/>
+            <circle cx="75" cy="15" r="3.5"/><circle cx="75" cy="55" r="3.5"/><circle cx="75" cy="95" r="3.5"/>
+            <circle cx="125" cy="35" r="3.5"/><circle cx="125" cy="75" r="3.5"/>
+            <circle cx="175" cy="55" r="5"/>
+        </g>
+    </svg>`;
+
+function renderProject(project, index) {
+    const number = String(index + 1).padStart(2, '0');
+    const link = esc(safe(project.link));
+    const demo = project.demo ? safe(project.demo) : '#';
+    const img = safeImg(project.image);
+    const tags = Array.isArray(project.tags) ? project.tags : [];
+
+    return `
+        <article class="proj-card">
+            <a class="proj-media${img ? '' : ' no-image'}"
+               href="${link}"
+               target="_blank"
+               rel="noopener noreferrer"
+               tabindex="-1"
+               aria-hidden="true">
+                <div class="proj-placeholder">${placeholderSvg}</div>
+                ${img ? `<img src="${esc(img)}" alt="" loading="lazy">` : ''}
+                <span class="proj-index">${number}</span>
+                <span class="proj-corner tr"></span>
+                <span class="proj-corner bl"></span>
+            </a>
+
+            <div class="proj-body">
+                <h3>${esc(project.title)}</h3>
+                <p>${esc(project.desc)}</p>
+
+                ${tags.length
+                    ? `<ul class="proj-tags">${tags
+                        .map(tag => `<li>${esc(tag)}</li>`)
+                        .join('')}</ul>`
+                    : ''}
+
+                <div class="proj-links">
+                    <a class="proj-link"
+                       href="${link}"
+                       target="_blank"
+                       rel="noopener noreferrer">
+                        View project <span>→</span>
+                    </a>
+                    ${
+                        demo !== '#'
+                            ? `<a class="proj-demo"
+                                  href="${esc(demo)}"
+                                  target="_blank"
+                                  rel="noopener noreferrer">
+                                   Demo <span>↗</span>
+                               </a>`
+                            : ''
+                    }
+                </div>
+            </div>
+        </article>
+    `;
+}
+
+/* "Explore All Projects" tile: sits in the grid right after the last project card */
+
+const REPOS_URL = 'https://github.com/mohamedfahadlal?tab=repositories';
+
+function renderExploreTile() {
+    return `
+        <a class="proj-more"
+           href="${REPOS_URL}"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="Explore all my projects on GitHub">
+            <span class="proj-more-icon" aria-hidden="true">↗</span>
+            <span class="proj-more-title">Explore All Projects</span>
+            <span class="proj-more-sub">See everything I've built on GitHub</span>
+        </a>
+    `;
+}
+
+function initProjectCards() {
+    const list = $('projects-list');
+    if (!list) return;
+
+    // If an image can't be loaded, fall back to the placeholder art.
+    list.querySelectorAll('.proj-media img').forEach(img => {
+        img.addEventListener('error', () => {
+            img.closest('.proj-media').classList.add('no-image');
+        });
+    });
+
+    // Spotlight follows the cursor.
+    list.querySelectorAll('.proj-card').forEach(card => {
+        card.addEventListener('pointermove', event => {
+            const rect = card.getBoundingClientRect();
+            card.style.setProperty('--mx', `${event.clientX - rect.left}px`);
+            card.style.setProperty('--my', `${event.clientY - rect.top}px`);
+        });
+    });
+}
+
 /* Load portfolio data */
 
 fetch('profile.json')
@@ -28,26 +144,17 @@ fetch('profile.json')
         $('name').textContent = profile.name;
         $('tagline').textContent = profile.tagline;
         $('about-bio').textContent = profile.bio;
-        $('hero-bio').textContent = profile.bio;
+        
 
         $('skills-list').innerHTML = (profile.skills || [])
             .map(skill => `<li>${esc(skill)}</li>`)
             .join('');
 
         $('projects-list').innerHTML = (profile.projects || [])
-            .map(project => `
-                <article class="project-card">
-                    <div class="project-icon" aria-hidden="true">↗</div>
-                    <h3>${esc(project.title)}</h3>
-                    <p>${esc(project.desc)}</p>
-                    <a href="${esc(safe(project.link))}"
-                       target="_blank"
-                       rel="noopener noreferrer">
-                        Explore project →
-                    </a>
-                </article>
-            `)
-            .join('');
+            .map((project, index) => renderProject(project, index))
+            .join('') + renderExploreTile();
+
+        initProjectCards();
 
         const socialIcons = {
             github: `
@@ -650,7 +757,7 @@ fetch('profile.json')
 document.addEventListener("DOMContentLoaded", () => {
     const navLinks = document.querySelectorAll(".nav-links a");
 
-    const sections = ["home", "about", "skills", "projects"]
+    const sections = ["home", "about", "skills", "projects", "contact"]
         .map(id => document.getElementById(id))
         .filter(Boolean);
 
@@ -694,4 +801,3 @@ document.addEventListener("DOMContentLoaded", () => {
         setActiveLink("home");
     }
 });
-

@@ -1,7 +1,7 @@
 {
     "name": "Mohamed Fahad Lal",
-    "tagline": "Your one-line introduction",
-    "bio": "Write 2 or 3 sentences about yourself.",
+    "tagline": "3rd Year Computer Science (AI) Student at TKMCE, Kollam.",
+    "bio": "I'm a Computer Science and AI student passionate about Artificial Intelligence, Machine Learning, and software development. I enjoy building AI/ML projects and exploring new technologies.",
     "skills": [
         "C",
         "C++",
@@ -35,7 +35,21 @@
         {
             "title": "AiQI",
             "desc": "AI-Based Real-Time Air Quality Risk Assessment and Personalized Health Advisory System.",
-            "link": "https://github.com/mohamedfahadlal/AiQI"
+            "link": "https://github.com/mohamedfahadlal/AiQI",
+            "image": "images/aiqi.png",
+            "demo": "https://drive.google.com/file/d/1ZO3AGvXY89lYv9qqPFGj_tmRt7o1uQ4q/view"
+        },
+        {
+            "title": "SignLoop",
+            "desc": "Real Time two way communication system for Indian Sign Language using Reinforcement Learning ",
+            "link": "https://github.com/mohamedfahadlal/SignLoop-RL-Framework-for-Two-Way-ISL-Communication"
+        },
+         {
+            "title": "Chaos IDE",
+            "desc": "A speedrun coding game where you race against an insufferable AI coding agent who throws sytanx/logical errors to your code and make it impossible to you to complete(but its POSSIBLE! ).",
+            "link": "https://github.com/mohamedfahadlal/CHAOS-IDE",
+            "image": "images/chaosIDE.png",
+            "demo": "https://drive.google.com/file/d/1CNEUoQ-jyp_ga1OI7e_WJzQmE7R6-rjJ/view"
         }
     ],
     "links": {
