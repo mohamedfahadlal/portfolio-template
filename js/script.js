@@ -19,6 +19,32 @@ const safe = (url) =>
 const safeImg = (url) =>
     /^(https?:\/\/[^\s"'<>]+|[\w\-./%]+)$/i.test(url || '') ? url : '';
 
+const setText = (id, value) => {
+    const element = $(id);
+
+    if (element) element.textContent = value;
+};
+
+const asString = (value, fallback = '') =>
+    typeof value === 'string' ? value : fallback;
+
+const normalizeProjects = (projects) => {
+    if (!Array.isArray(projects)) return [];
+
+    return projects.filter(project =>
+        project &&
+        typeof project === 'object' &&
+        typeof project.title === 'string' &&
+        typeof project.desc === 'string' &&
+        typeof project.link === 'string'
+    );
+};
+
+const normalizeLinks = (links) =>
+    links && typeof links === 'object' && !Array.isArray(links)
+        ? Object.entries(links).filter(([, url]) => typeof url === 'string')
+        : [];
+
 const placeholderSvg = `
     <svg viewBox="0 0 200 110" fill="none" stroke="currentColor" aria-hidden="true">
         <g stroke-width="1" opacity=".55">
@@ -114,7 +140,12 @@ function initProjectCards() {
     // If an image can't be loaded, fall back to the placeholder art.
     list.querySelectorAll('.proj-media img').forEach(img => {
         img.addEventListener('error', () => {
-            img.closest('.proj-media').classList.add('no-image');
+            const media = img.closest('.proj-media');
+
+            if (media) {
+                media.classList.add('no-image');
+                img.remove();
+            }
         });
     });
 
@@ -139,22 +170,43 @@ fetch('profile.json')
         return response.json();
     })
     .then(profile => {
-        document.title = `${profile.name} | Portfolio`;
+        if (!profile || typeof profile !== 'object') {
+            throw new Error('profile.json must contain a JSON object');
+        }
 
-        $('name').textContent = profile.name;
-        $('tagline').textContent = profile.tagline;
-        $('about-bio').textContent = profile.bio;
-        
+        const name = asString(profile.name, 'Portfolio');
+        const tagline = asString(profile.tagline);
+        const bio = asString(profile.bio);
+        const projects = normalizeProjects(profile.projects);
+        const links = normalizeLinks(profile.links);
 
-        $('skills-list').innerHTML = (profile.skills || [])
-            .map(skill => `<li>${esc(skill)}</li>`)
-            .join('');
+        if (!Array.isArray(profile.projects)) {
+            console.warn('profile.json projects must be an array');
+        }
 
-        $('projects-list').innerHTML = (profile.projects || [])
+        if (!profile.skills || typeof profile.skills !== 'object') {
+            console.warn('profile.json skills should be an object or array');
+        }
+
+        document.title = `${name} | Portfolio`;
+
+        setText('name', name);
+        setText('tagline', tagline);
+        setText('about-bio', bio);
+
+        if (typeof initSkills === 'function') {
+            initSkills(profile.skills);
+        }
+
+        const projectsList = $('projects-list');
+
+        if (projectsList) {
+            projectsList.innerHTML = projects
             .map((project, index) => renderProject(project, index))
             .join('') + renderExploreTile();
 
-        initProjectCards();
+            initProjectCards();
+        }
 
         const socialIcons = {
             github: `
@@ -171,7 +223,10 @@ fetch('profile.json')
             `
         };
 
-        $('links').innerHTML = Object.entries(profile.links || {})
+        const linksElement = $('links');
+
+        if (linksElement) {
+            linksElement.innerHTML = links
             .map(([label, url]) => {
                 const key = label.toLowerCase();
 
@@ -191,6 +246,7 @@ fetch('profile.json')
                 `;
             })
             .join('');
+        }
     })
     .catch(error => {
         console.error('Portfolio loading error:', error);
@@ -199,7 +255,7 @@ fetch('profile.json')
 
         if (tagline) {
             tagline.textContent =
-                'Please check profile.json and ensure the local server is running.';
+                'Portfolio data could not be loaded. Please try again later.';
         }
     });
 
@@ -752,52 +808,3 @@ fetch('profile.json')
         observer.observe(section);
     });
 })();
-
-/* Active navbar link on scroll */
-document.addEventListener("DOMContentLoaded", () => {
-    const navLinks = document.querySelectorAll(".nav-links a");
-
-    const sections = ["home", "about", "skills", "projects", "contact"]
-        .map(id => document.getElementById(id))
-        .filter(Boolean);
-
-    function setActiveLink(id) {
-        navLinks.forEach(link => {
-            const isActive = link.getAttribute("href") === `#${id}`;
-
-            link.classList.toggle("active", isActive);
-
-            if (isActive) {
-                link.setAttribute("aria-current", "location");
-            } else {
-                link.removeAttribute("aria-current");
-            }
-        });
-    }
-
-    const observer = new IntersectionObserver(
-        entries => {
-            const visibleSections = entries
-                .filter(entry => entry.isIntersecting)
-                .sort(
-                    (a, b) =>
-                        b.intersectionRatio - a.intersectionRatio
-                );
-
-            if (visibleSections.length > 0) {
-                setActiveLink(visibleSections[0].target.id);
-            }
-        },
-        {
-            rootMargin: "-20% 0px -60% 0px",
-            threshold: [0, 0.1, 0.25, 0.5, 0.75]
-        }
-    );
-
-    sections.forEach(section => observer.observe(section));
-
-    // Ensure Home is active when the page first loads.
-    if (window.scrollY < 100) {
-        setActiveLink("home");
-    }
-});

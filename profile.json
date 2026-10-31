@@ -2,35 +2,47 @@
     "name": "Mohamed Fahad Lal",
     "tagline": "3rd Year Computer Science (AI) Student at TKMCE, Kollam.",
     "bio": "I'm a Computer Science and AI student passionate about Artificial Intelligence, Machine Learning, and software development. I enjoy building AI/ML projects and exploring new technologies.",
-    "skills": [
-        "C",
-        "C++",
-        "Python",
-        "Java",
-        "HTML",
-        "CSS",
-        "JavaScript",
-        "Git",
-        "GitHub",
-        "Flask",
-        "Django",
-        "JavaFx",   
-        "Node.js",
-        "MySQL",
-        "MongoDB",
-        "PostgreSQL",
-        "Machine Learning",
-        "Keras",
-        "Matplotlib",
-        "Numpy",
-        "Pandas",
-        "PyTorch",
-        "TensorFlow",
-        "Scikit-learn",
-        "OpenCV",
-        "MediaPipe",
-        "Arduino"
-    ],
+    "skills": {
+        "Languages": [
+            "C",
+            "C++",
+            "Python",
+            "Java",
+            "JavaScript",
+            "HTML",
+            "CSS"
+        ],
+        "Frameworks": [
+            "Flask",
+            "Django",
+            "Node.js",
+            "JavaFx"
+        ],
+        "Databases": [
+            "MySQL",
+            "MongoDB",
+            "PostgreSQL"
+        ],
+        "AI / ML": [
+            "Machine Learning",
+            "PyTorch",
+            "TensorFlow",
+            "Keras",
+            "Scikit-learn",
+            "OpenCV",
+            "MediaPipe"
+        ],
+        "Data": [
+            "Numpy",
+            "Pandas",
+            "Matplotlib"
+        ],
+        "Tools": [
+            "Git",
+            "GitHub",
+            "Arduino"
+        ]
+    },
     "projects": [
         {
             "title": "AiQI",
@@ -44,7 +56,7 @@
             "desc": "Real Time two way communication system for Indian Sign Language using Reinforcement Learning ",
             "link": "https://github.com/mohamedfahadlal/SignLoop-RL-Framework-for-Two-Way-ISL-Communication"
         },
-         {
+        {
             "title": "Chaos IDE",
             "desc": "A speedrun coding game where you race against an insufferable AI coding agent who throws sytanx/logical errors to your code and make it impossible to you to complete(but its POSSIBLE! ).",
             "link": "https://github.com/mohamedfahadlal/CHAOS-IDE",
